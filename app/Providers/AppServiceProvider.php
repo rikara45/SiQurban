@@ -22,3 +22,5 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
+
+// Tidak ada constant HOME di file ini, jadi tidak ada perubahan yang perlu dilakukan.
