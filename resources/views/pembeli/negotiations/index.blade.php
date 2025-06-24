@@ -27,7 +27,8 @@
                                         <td class="px-6 py-4">{{ $nego->animal->name }}</td>
                                         <td class="px-6 py-4">Rp {{ number_format($nego->offer_price) }}</td>
                                         <td class="px-6 py-4">
-                                            @if($nego->status == 'countered')
+                                            {{-- Cek apakah ada nilai di counter_price, bukan berdasarkan status --}}
+                                            @if($nego->counter_price)
                                                 <span class="font-bold">Rp {{ number_format($nego->counter_price) }}</span>
                                             @else
                                                 -

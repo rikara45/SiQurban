@@ -16,7 +16,7 @@ class Negotiation extends Model
         'seller_id',
         'offer_price',
         'status',
-        'counter_price',
+        'counter_price', // PASTIKAN BARIS INI ADA
     ];
 
     public function animal()

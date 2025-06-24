@@ -44,44 +44,47 @@
                             <p class="text-gray-600">{{ $animal->description ?? 'Tidak ada deskripsi.' }}</p>
                         </div>
 
-                        @hasrole('pembeli')
-                            <div class="mt-6">
-                                <form action="{{ route('pembeli.cart.add', $animal) }}" method="POST">
-                                    @csrf
-                                    <x-primary-button>
-                                        Tambah ke Keranjang
-                                    </x-primary-button>
-                                </form>
-                            </div>
+                        {{-- BUNGKUS SEMUA TOMBOL AKSI DENGAN KONDISI INI --}}
+                        @if($animal->status == 'available')
+                            @hasrole('pembeli')
+                                <div class="mt-6">
+                                    <form action="{{ route('pembeli.cart.add', $animal) }}" method="POST">
+                                        @csrf
+                                        <x-primary-button>
+                                            Tambah ke Keranjang
+                                        </x-primary-button>
+                                    </form>
+                                </div>
 
-                            {{-- BLOK BARU UNTUK NEGOSIASI --}}
-                            <div class="mt-6 border-t pt-6">
-                                <h4 class="font-bold text-lg">Ajukan Penawaran</h4>
-                                <p class="text-sm text-gray-600 mb-2">Harga asli: Rp {{ number_format($animal->price, 0, ',', '.') }}</p>
-                                <form action="{{ route('pembeli.negotiations.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="animal_id" value="{{ $animal->id }}">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="relative rounded-md shadow-sm">
-                                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                <span class="text-gray-500 sm:text-sm">Rp</span>
+                                <div class="mt-6 border-t pt-6">
+                                    <h4 class="font-bold text-lg">Ajukan Penawaran</h4>
+                                    <p class="text-sm text-gray-600 mb-2">Harga asli: Rp {{ number_format($animal->price, 0, ',', '.') }}</p>
+                                    <form action="{{ route('pembeli.negotiations.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="animal_id" value="{{ $animal->id }}">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="relative rounded-md shadow-sm">
+                                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                    <span class="text-gray-500 sm:text-sm">Rp</span>
+                                                </div>
+                                                <input type="number" name="offer_price" id="offer_price" class="block w-full rounded-md border-gray-300 pl-8 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="0" required>
                                             </div>
-                                            <input type="number" name="offer_price" id="offer_price" class="block w-full rounded-md border-gray-300 pl-8 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="0" required>
+                                            <x-secondary-button type="submit">
+                                                Tawar Harga
+                                            </x-secondary-button>
                                         </div>
-                                        <x-secondary-button type="submit">
-                                            Tawar Harga
-                                        </x-secondary-button>
-                                    </div>
-                                    <x-input-error :messages="$errors->get('offer_price')" class="mt-2" />
-                                </form>
-                                @if(session('success'))
-                                    <p class="text-sm text-green-600 mt-2">{{ session('success') }}</p>
-                                @endif
-                                 @if(session('error'))
-                                    <p class="text-sm text-red-600 mt-2">{{ session('error') }}</p>
-                                @endif
-                            </div>
-                        @endhasrole
+                                        <x-input-error :messages="$errors->get('offer_price')" class="mt-2" />
+                                    </form>
+                                    @if(session('success'))
+                                        <p class="text-sm text-green-600 mt-2">{{ session('success') }}</p>
+                                    @endif
+                                    @if(session('error'))
+                                        <p class="text-sm text-red-600 mt-2">{{ session('error') }}</p>
+                                    @endif
+                                </div>
+                            @endhasrole
+                        @endif
+                        {{-- AKHIR BUNGKUS KONDISI --}}
                     </div>
                 </div>
             </div>

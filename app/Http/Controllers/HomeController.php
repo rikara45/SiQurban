@@ -10,7 +10,9 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Animal::query()->where('status', 'available')->with(['category', 'photos']);
+        $query = Animal::query()
+            ->whereIn('status', ['available', 'sold']) // Ambil yang available DAN sold
+            ->with(['category', 'photos']);
 
         // Search functionality
         if ($request->filled('search')) {
@@ -36,7 +38,11 @@ class HomeController extends Controller
             $query->where('price', '<=', $request->input('max_price'));
         }
 
-        $animals = $query->latest()->paginate(12);
+        // Tambahkan pengurutan agar 'available' selalu di atas
+        $animals = $query->orderByRaw("FIELD(status, 'available', 'sold')")
+                         ->latest()
+                         ->paginate(12);
+                         
         $categories = Category::all();
 
         return view('welcome', compact('animals', 'categories'));

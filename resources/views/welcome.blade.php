@@ -27,49 +27,11 @@
             </div>
 
             <div class="relative z-10">
-                <!-- Navigation -->
-                <nav class="px-6 py-6">
-                    <div class="max-w-7xl mx-auto flex justify-between items-center">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                                </svg>
-                            </div>
-                            <h1 class="text-2xl font-bold text-white">SiQurban</h1>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4">
-                            @auth
-                                @php
-                                    $user = Auth::user();
-                                    if ($user->hasRole('admin')) {
-                                        $dashboardRoute = route('admin.dashboard');
-                                    } elseif ($user->hasRole('penjual')) {
-                                        $dashboardRoute = route('penjual.dashboard');
-                                    } elseif ($user->hasRole('pembeli')) {
-                                        $dashboardRoute = route('pembeli.dashboard');
-                                    } else {
-                                        $dashboardRoute = route('dashboard');
-                                    }
-                                @endphp
-                                <a href="{{ $dashboardRoute }}" class="glass text-white px-6 py-2 rounded-full font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300">
-                                    Dashboard
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="text-white hover:text-gray-200 font-medium transition-colors duration-300">
-                                    Masuk
-                                </a>
-                                <a href="{{ route('register') }}" class="bg-white text-purple-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-all duration-300">
-                                    Daftar
-                                </a>
-                            @endauth
-                        </div>
-                    </div>
-                </nav>
+                {{-- GANTI NAV SEBELUMNYA DENGAN INI --}}
+                @include('layouts.navigation')
 
-                <!-- Hero Content -->
                 <div class="max-w-7xl mx-auto px-6 py-20">
+                    <!-- Hero Content -->
                     <div class="text-center">
                         <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
                             Temukan Hewan<br>
@@ -136,6 +98,17 @@
                                         <img src="{{ $animal->photos->first() ? asset('storage/' . $animal->photos->first()->path) : 'https://placehold.co/400x300?text=Foto+Hewan' }}" 
                                              alt="{{ $animal->name }}" 
                                              class="w-full h-56 object-cover">
+
+                                        {{-- TAMBAHKAN BLOK KODE INI --}}
+                                        @if($animal->status == 'sold')
+                                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                <span class="text-white text-2xl font-bold border-4 border-white px-6 py-2 transform -rotate-12">
+                                                    TERJUAL
+                                                </span>
+                                            </div>
+                                        @endif
+                                        {{-- AKHIR BLOK --}}
+
                                         <div class="absolute top-4 left-4">
                                             {{-- PERBAIKAN 1: Cek jika kategori ada --}}
                                             @if($animal->category)
