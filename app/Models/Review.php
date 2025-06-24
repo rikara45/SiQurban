@@ -11,6 +11,7 @@ class Review extends Model
 
     protected $fillable = [
         'order_id',
+        'order_item_id', // Tambahkan ini
         'user_id',
         'animal_id',
         'rating',
@@ -30,5 +31,10 @@ class Review extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+    // Tambahkan relasi ini
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItem::class);
     }
 }

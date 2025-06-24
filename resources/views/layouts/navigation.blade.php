@@ -25,6 +25,9 @@
                              <x-nav-link :href="route('penjual.animals.index')" :active="request()->routeIs('penjual.animals.*')">
                                 {{ __('Hewan Saya') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('penjual.orders.index')" :active="request()->routeIs('penjual.orders.*')">
+                                {{ __('Riwayat Penjualan') }}
+                            </x-nav-link>
                         @endhasrole
                         @hasrole('pembeli')
                             <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
@@ -32,6 +35,12 @@
                             </x-nav-link>
                              <x-nav-link :href="route('pembeli.cart.index')" :active="request()->routeIs('pembeli.cart.*')">
                                 {{ __('Keranjang') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('pembeli.orders.index')" :active="request()->routeIs('pembeli.orders.*')">
+                                {{ __('Riwayat Pesanan') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('pembeli.negotiations.index')" :active="request()->routeIs('pembeli.negotiations.*')">
+                                {{ __('Negosiasi Saya') }}
                             </x-nav-link>
                         @endhasrole
                     @endauth
@@ -105,6 +114,9 @@
                      <x-responsive-nav-link :href="route('penjual.animals.index')" :active="request()->routeIs('penjual.animals.*')">
                         {{ __('Hewan Saya') }}
                     </x-responsive-nav-link>
+                     <x-responsive-nav-link :href="route('penjual.orders.index')" :active="request()->routeIs('penjual.orders.*')">
+                        {{ __('Riwayat Penjualan') }}
+                    </x-responsive-nav-link>
                 @endhasrole
                  @hasrole('pembeli')
                     <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
@@ -112,6 +124,12 @@
                     </x-responsive-nav-link>
                      <x-responsive-nav-link :href="route('pembeli.cart.index')" :active="request()->routeIs('pembeli.cart.*')">
                         {{ __('Keranjang') }}
+                    </x-responsive-nav-link>
+                     <x-responsive-nav-link :href="route('pembeli.orders.index')" :active="request()->routeIs('pembeli.orders.*')">
+                        {{ __('Riwayat Pesanan') }}
+                    </x-responsive-nav-link>
+                     <x-responsive-nav-link :href="route('pembeli.negotiations.index')" :active="request()->routeIs('pembeli.negotiations.*')">
+                        {{ __('Negosiasi Saya') }}
                     </x-responsive-nav-link>
                 @endhasrole
              @else

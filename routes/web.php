@@ -55,17 +55,45 @@ Route::middleware(['auth', 'role:penjual'])->prefix('penjual')->name('penjual.')
     Route::get('/dashboard', [PenjualDashboardController::class, 'index'])->name('dashboard');
     // Rute resource animals untuk penjual
     Route::resource('animals', PenjualAnimalController::class);
+
+    // Penjualan
+    Route::get('/orders', [\App\Http\Controllers\Penjual\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [\App\Http\Controllers\Penjual\OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/accept', [\App\Http\Controllers\Penjual\OrderController::class, 'accept'])->name('orders.accept');
+    Route::patch('/orders/{order}/reject', [\App\Http\Controllers\Penjual\OrderController::class, 'reject'])->name('orders.reject');
+
+    // Negotiation Routes
+    Route::get('/negotiations', [\App\Http\Controllers\Penjual\NegotiationController::class, 'index'])->name('negotiations.index');
+    Route::patch('/negotiations/{negotiation}/accept', [\App\Http\Controllers\Penjual\NegotiationController::class, 'accept'])->name('negotiations.accept');
+    Route::patch('/negotiations/{negotiation}/reject', [\App\Http\Controllers\Penjual\NegotiationController::class, 'reject'])->name('negotiations.reject');
+    Route::patch('/negotiations/{negotiation}/counter', [\App\Http\Controllers\Penjual\NegotiationController::class, 'counter'])->name('negotiations.counter');
 });
 
 // Rute untuk Pembeli
 Route::middleware(['auth', 'role:pembeli'])->prefix('pembeli')->name('pembeli.')->group(function () {
     Route::get('/dashboard', [PembeliDashboardController::class, 'index'])->name('dashboard');
-    // Tambahkan rute pembeli lainnya di sini (browse, cart, dll)
-
+    
     // Cart Routes
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{animal}', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Checkout Routes
+    Route::post('/checkout', [\App\Http\Controllers\Pembeli\CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/success/{order}', [\App\Http\Controllers\Pembeli\CheckoutController::class, 'success'])->name('checkout.success');
+
+    // Order History
+    Route::get('/orders', [\App\Http\Controllers\Pembeli\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [\App\Http\Controllers\Pembeli\OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/complete', [\App\Http\Controllers\Pembeli\OrderController::class, 'complete'])->name('orders.complete');
+    // Review Route
+    Route::post('/review', [\App\Http\Controllers\Pembeli\ReviewController::class, 'store'])->name('review.store');
+
+    // Negotiation Route
+    Route::get('/negotiations', [\App\Http\Controllers\Pembeli\NegotiationController::class, 'index'])->name('negotiations.index');
+    Route::post('/negotiations/store', [\App\Http\Controllers\Pembeli\NegotiationController::class, 'store'])->name('negotiations.store');
+    Route::patch('/negotiations/{negotiation}/accept-counter', [\App\Http\Controllers\Pembeli\NegotiationController::class, 'acceptCounter'])->name('negotiations.acceptCounter');
+    Route::patch('/negotiations/{negotiation}/reject-counter', [\App\Http\Controllers\Pembeli\NegotiationController::class, 'rejectCounter'])->name('negotiations.rejectCounter');
 });
 
 // Rute Otentikasi dari Breeze

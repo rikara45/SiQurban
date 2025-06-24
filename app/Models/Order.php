@@ -14,6 +14,15 @@ class Order extends Model
         'order_number',
         'total_amount',
         'status',
+        'delivery_method', // Tambahkan ini
+        'rejection_reason',
+        'seller_confirmed_at',
+        'buyer_confirmed_at'
+    ];
+
+    protected $casts = [
+        'seller_confirmed_at' => 'datetime',
+        'buyer_confirmed_at' => 'datetime',
     ];
 
     /**

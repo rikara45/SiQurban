@@ -28,15 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = $request->user();
-
-        if ($user->hasRole('admin')) {
-            return redirect()->intended(route('admin.dashboard'));
-        } elseif ($user->hasRole('penjual')) {
-            return redirect()->intended(route('penjual.dashboard'));
-        } else {
-            return redirect()->intended(route('pembeli.dashboard'));
-        }
+        // Selalu redirect ke halaman welcome setelah login
+        return redirect()->route('home');
     }
 
     /**

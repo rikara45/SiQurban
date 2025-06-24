@@ -37,22 +37,22 @@ class RolePermissionSeeder extends Seeder
 
         // Create Admin User
         $admin = User::factory()->create([
-            'name' => 'Admin User',
+            'name' => 'Admin',
             'email' => 'admin@siqurban.com',
         ]);
         $admin->assignRole($roleAdmin);
 
         // Create Penjual User
         $penjual = User::factory()->create([
-            'name' => 'Penjual User',
-            'email' => 'penjual@siqurban.com',
+            'name' => 'Dimas Darmawanto',
+            'email' => 'dimas@siqurban.com',
         ]);
         $penjual->assignRole($rolePenjual);
 
         // Create Pembeli User
         $pembeli = User::factory()->create([
-            'name' => 'Pembeli User',
-            'email' => 'pembeli@siqurban.com',
+            'name' => 'Ramdhan Raganni',
+            'email' => 'agan@siqurban.com',
         ]);
         $pembeli->assignRole($rolePembeli);
     }

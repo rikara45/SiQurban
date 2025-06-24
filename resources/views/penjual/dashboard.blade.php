@@ -69,11 +69,11 @@
                                 <a href="{{ route('penjual.animals.index') }}" class="w-full text-center px-4 py-3 bg-white bg-opacity-20 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-30 transition">
                                     Kelola Hewan
                                 </a>
-                                <a href="#" class="w-full text-center px-4 py-3 bg-gray-500 bg-opacity-50 rounded-md font-semibold text-xs text-gray-300 uppercase tracking-widest cursor-not-allowed">
-                                    Pesanan Masuk (Segera)
+                                <a href="{{ route('penjual.orders.index') }}" class="w-full text-center px-4 py-3 bg-white bg-opacity-20 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-30 transition">
+                                    Manajemen Pesanan
                                 </a>
-                                <a href="#" class="w-full text-center px-4 py-3 bg-gray-500 bg-opacity-50 rounded-md font-semibold text-xs text-gray-300 uppercase tracking-widest cursor-not-allowed">
-                                    Negosiasi (Segera)
+                                <a href="{{ route('penjual.negotiations.index') }}" class="w-full text-center px-4 py-3 bg-white bg-opacity-20 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-30 transition">
+                                    Negosiasi
                                 </a>
                             </div>
                         </div>

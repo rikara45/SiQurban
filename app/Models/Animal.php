@@ -28,4 +28,15 @@ class Animal extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    // FUNGSI BARU UNTUK RATING
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return number_format($this->averageRating(), 1);
+    }
 }

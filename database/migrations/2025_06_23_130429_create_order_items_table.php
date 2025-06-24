@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->foreignId('animal_id')->constrained()->onDelete('cascade');
             $table->foreignId('seller_id')->references('id')->on('users')->onDelete('cascade');
             $table->decimal('price', 10, 2);
-            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

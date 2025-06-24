@@ -1,4 +1,5 @@
 <?php
+// app/Models/Negotiation.php
 
 namespace App\Models;
 

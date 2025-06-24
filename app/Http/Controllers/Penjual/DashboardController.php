@@ -5,33 +5,42 @@ namespace App\Http\Controllers\Penjual;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Animal;
+use App\Models\Animal;      
+use App\Models\Sale;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Mengambil user yang sedang login
         $user = Auth::user();
 
-        // Menghitung statistik dasar
+        // Statistik Hewan
         $totalAnimals = $user->animals()->count();
         $animalsAvailable = $user->animals()->where('status', 'available')->count();
+        // Status 'sold' menandakan hewan sudah di-commit untuk penjualan setelah di-acc penjual. Ini sudah benar.
         $animalsSold = $user->animals()->where('status', 'sold')->count();
         
-        // Menghitung statistik penjualan
-        // Kita menggunakan relasi 'sales' yang baru dibuat
-        $totalSales = $user->sales()->count();
-        $totalEarnings = $user->sales()->sum('price');
+        // --- PERBAIKI LOGIKA STATISTIK PENJUALAN DI SINI ---
+        
+        // Hanya hitung item dari order yang sudah 'completed'
+        $completedSales = $user->sales()->whereHas('order', function ($query) {
+            $query->where('status', 'completed');
+        });
 
-        // Mengambil beberapa pesanan terbaru untuk ditampilkan
+        // Kloning query agar bisa digunakan untuk count dan sum tanpa eksekusi ulang
+        $totalSales = (clone $completedSales)->count();
+        $totalEarnings = (clone $completedSales)->sum('price');
+        
+        // Ambil 5 penjualan terbaru yang sudah selesai
         $recentSales = $user->sales()
-                            ->with(['animal', 'order.buyer']) // Eager loading untuk performa
-                            ->latest() // Urutkan dari yang terbaru
-                            ->take(5) // Ambil 5 data teratas
+                            ->whereHas('order', function ($query) {
+                                $query->where('status', 'completed');
+                            })
+                            ->with(['animal', 'order.buyer'])
+                            ->latest()
+                            ->take(5)
                             ->get();
 
-        // Mengirim semua data ke view
         return view('penjual.dashboard', compact(
             'totalAnimals',
             'animalsAvailable',
