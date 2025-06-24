@@ -10,6 +10,9 @@ use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardControll
 use App\Http\Controllers\Penjual\AnimalController as PenjualAnimalController;
 use App\Http\Controllers\Pembeli\CartController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AnimalController as AdminAnimalController;
+use App\Http\Controllers\Admin\TransactionController;
 
 // Halaman Awal
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -34,6 +37,17 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', AdminCategoryController::class);
+
+    // Manajemen User
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.updateStatus');
+
+    // Manajemen Hewan
+    Route::get('/animals', [AdminAnimalController::class, 'index'])->name('animals.index');
+
+    // Rute untuk Transaksi
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{order}', [TransactionController::class, 'show'])->name('transactions.show');
 });
 
 // Rute untuk Penjual

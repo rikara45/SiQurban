@@ -5,19 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="@auth
-                        @if(Auth::user()->hasRole('admin'))
-                            {{ route('admin.dashboard') }}
-                        @elseif(Auth::user()->hasRole('penjual'))
-                            {{ route('penjual.dashboard') }}
-                        @elseif(Auth::user()->hasRole('pembeli'))
-                            {{ route('pembeli.dashboard') }}
-                        @else
-                            {{ route('dashboard') }}
-                        @endif
-                    @else
-                        {{ route('home') }}
-                    @endauth">
+                    <a href="{{ route('home') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>

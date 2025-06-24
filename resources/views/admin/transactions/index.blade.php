@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Manajemen Kategori - {{ config('app.name', 'Laravel') }}</title>
+    <title>Riwayat Transaksi - {{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -23,13 +23,10 @@
             <div class="absolute top-20 -left-20 w-60 h-60 bg-white opacity-5 rounded-full animate-float" style="animation-delay: -2s;"></div>
         </div>
         <header>
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h2 class="font-semibold text-2xl text-white leading-tight">
-                    {{ __('Manajemen Kategori Hewan') }}
+                    {{ __('Riwayat Transaksi Global') }}
                 </h2>
-                <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-30 transition">
-                    {{ __('+ Tambah Kategori') }}
-                </a>
             </div>
         </header>
         <main>
@@ -37,43 +34,38 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="glass overflow-hidden shadow-lg rounded-2xl">
                         <div class="p-6 text-white">
-                            @if(session('success'))
-                                <div class="bg-green-500 bg-opacity-30 border border-green-400 text-white px-4 py-3 rounded relative mb-4" role="alert">
-                                    <span class="block sm:inline">{{ session('success') }}</span>
-                                </div>
-                            @endif
-                            @if(session('error'))
-                                <div class="bg-red-500 bg-opacity-30 border border-red-400 text-white px-4 py-3 rounded relative mb-4" role="alert">
-                                    <span class="block sm:inline">{{ session('error') }}</span>
-                                </div>
-                            @endif
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200 divide-opacity-20">
                                     <thead>
                                         <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Deskripsi</th>
-                                            <th class="relative px-6 py-3"><span class="sr-only">Aksi</span></th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order #</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Pembeli</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Tanggal</th>
+                                            <th class="relative px-6 py-3"></th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 divide-opacity-20">
-                                        @forelse ($categories as $category)
+                                        @forelse ($orders as $order)
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">{{ $category->name }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ $category->description ?? '-' }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ $order->order_number }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ $order->buyer->name }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Rp {{ number_format($order->total_amount) }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-500 bg-opacity-50 text-blue-200">
+                                                        {{ str_replace('_', ' ', $order->status) }}
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ $order->created_at->format('d M Y') }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-300 hover:text-indigo-200">Edit</a>
-                                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block ml-4" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-red-400 hover:text-red-300">Hapus</button>
-                                                    </form>
+                                                    <a href="{{ route('admin.transactions.show', $order) }}" class="text-indigo-300 hover:text-indigo-200">Detail</a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
-                                                    Belum ada data kategori.
+                                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
+                                                    Belum ada data transaksi.
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -81,7 +73,7 @@
                                 </table>
                             </div>
                             <div class="mt-4 text-white">
-                                {{ $categories->links() }}
+                                {{ $orders->links() }}
                             </div>
                         </div>
                     </div>

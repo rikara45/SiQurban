@@ -41,7 +41,19 @@
                         
                         <div class="flex items-center space-x-4">
                             @auth
-                                <a href="{{ route('dashboard') }}" class="glass text-white px-6 py-2 rounded-full font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300">
+                                @php
+                                    $user = Auth::user();
+                                    if ($user->hasRole('admin')) {
+                                        $dashboardRoute = route('admin.dashboard');
+                                    } elseif ($user->hasRole('penjual')) {
+                                        $dashboardRoute = route('penjual.dashboard');
+                                    } elseif ($user->hasRole('pembeli')) {
+                                        $dashboardRoute = route('pembeli.dashboard');
+                                    } else {
+                                        $dashboardRoute = route('dashboard');
+                                    }
+                                @endphp
+                                <a href="{{ $dashboardRoute }}" class="glass text-white px-6 py-2 rounded-full font-medium hover:bg-white hover:bg-opacity-20 transition-all duration-300">
                                     Dashboard
                                 </a>
                             @else
