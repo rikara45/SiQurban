@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Animal;
 
 class User extends Authenticatable
 {
@@ -53,7 +55,7 @@ class User extends Authenticatable
      */
     public function animals()
     {
-        return $this->hasMany(\App\Models\Animal::class, 'user_id');
+        return $this->hasMany(Animal::class, 'user_id');
     }
 
     /**
@@ -62,5 +64,14 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    /**
+     * Relasi yang mendefinisikan penjualan yang diterima oleh User (sebagai Penjual).
+     * Relasi ini melalui tabel OrderItem.
+     */
+    public function sales()
+    {
+        return $this->hasMany(OrderItem::class, 'seller_id');
     }
 }
