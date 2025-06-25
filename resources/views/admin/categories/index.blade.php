@@ -1,78 +1,120 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Manajemen Kategori - {{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .glass { backdrop-filter: blur(16px); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            /* Latar belakang netral */
+        }
+
+        .content-card {
+            background-color: #d9ead3;
+            /* Warna hijau terang */
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-btn {
+            background-color: #93c47d;
+            color: #000000;
+        }
+
+        .custom-btn:hover {
+            background-color: #6aa84f;
+        }
     </style>
 </head>
+
 <body class="font-sans antialiased">
-    <div class="min-h-screen gradient-bg">
+    <div class="min-h-screen">
         @include('layouts.navigation')
-        <div class="absolute inset-0 overflow-hidden -z-10">
-            <div class="absolute -top-40 -right-32 w-80 h-80 bg-white opacity-10 rounded-full animate-float"></div>
-            <div class="absolute top-20 -left-20 w-60 h-60 bg-white opacity-5 rounded-full animate-float" style="animation-delay: -2s;"></div>
-        </div>
-        <header>
+
+        <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h2 class="font-semibold text-2xl text-white leading-tight">
+                {{-- PERUBAHAN: Teks header menjadi hitam --}}
+                <h2 class="font-semibold text-2xl text-black leading-tight">
                     {{ __('Manajemen Kategori Hewan') }}
                 </h2>
-                <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-30 transition">
+                {{-- PERUBAHAN: Tombol disesuaikan dengan tema hijau --}}
+                <a href="{{ route('admin.categories.create') }}"
+                    class="inline-flex items-center px-4 py-2 custom-btn border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest transition">
                     {{ __('+ Tambah Kategori') }}
                 </a>
             </div>
         </header>
+
         <main>
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="glass overflow-hidden shadow-lg rounded-2xl">
-                        <div class="p-6 text-white">
+                    {{-- PERUBAHAN: Menggunakan .content-card --}}
+                    <div class="content-card overflow-hidden">
+                        <div class="p-6 text-black">
+                            {{-- PERUBAHAN: Notifikasi disesuaikan --}}
                             @if(session('success'))
-                                <div class="bg-green-500 bg-opacity-30 border border-green-400 text-white px-4 py-3 rounded relative mb-4" role="alert">
+                                <div class="bg-green-200 border border-green-300 text-green-800 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <span class="block sm:inline">{{ session('success') }}</span>
                                 </div>
                             @endif
                             @if(session('error'))
-                                <div class="bg-red-500 bg-opacity-30 border border-red-400 text-white px-4 py-3 rounded relative mb-4" role="alert">
+                                <div class="bg-red-200 border border-red-300 text-red-800 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <span class="block sm:inline">{{ session('error') }}</span>
                                 </div>
                             @endif
                             <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200 divide-opacity-20">
+                                {{-- PERUBAHAN: Tabel dengan border hitam --}}
+                                <table class="min-w-full border-collapse border border-black">
                                     <thead>
                                         <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Deskripsi</th>
-                                            <th class="relative px-6 py-3"><span class="sr-only">Aksi</span></th>
+                                            {{-- PERUBAHAN: Header tabel dengan border dan teks hitam --}}
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider border border-black">
+                                                Nama</th>
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider border border-black">
+                                                Deskripsi</th>
+                                            <th
+                                                class="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider border border-black">
+                                                Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-gray-200 divide-opacity-20">
+                                    <tbody>
                                         @forelse ($categories as $category)
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">{{ $category->name }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ $category->description ?? '-' }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-300 hover:text-indigo-200">Edit</a>
-                                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block ml-4" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
+                                                {{-- PERUBAHAN: Sel tabel dengan border dan teks hitam --}}
+                                                <td class="px-6 py-4 whitespace-nowrap border border-black">
+                                                    {{ $category->name }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap border border-black">
+                                                    {{ $category->description ?? '-' }}</td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium border border-black">
+                                                    {{-- PERUBAHAN: Tautan aksi disesuaikan --}}
+                                                    <a href="{{ route('admin.categories.edit', $category) }}"
+                                                        class="text-blue-600 hover:text-blue-800">Edit</a>
+                                                    <form action="{{ route('admin.categories.destroy', $category) }}"
+                                                        method="POST" class="inline-block ml-4"
+                                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="text-red-400 hover:text-red-300">Hapus</button>
+                                                        <button type="submit"
+                                                            class="text-red-600 hover:text-red-800">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
+                                                <td colspan="3"
+                                                    class="px-6 py-4 whitespace-nowrap text-center text-sm text-black border border-black">
                                                     Belum ada data kategori.
                                                 </td>
                                             </tr>
@@ -80,7 +122,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="mt-4 text-white">
+                            <div class="mt-4 text-black">
                                 {{ $categories->links() }}
                             </div>
                         </div>
@@ -90,4 +132,5 @@
         </main>
     </div>
 </body>
+
 </html>
